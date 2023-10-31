@@ -53,7 +53,7 @@ void quadro (){
     gotoxy(45,12); printf("%c", 188);
 }
 
-bool validPalavra(char *palavra){ // Verifica se o caracter está entre 'A' e 'Z' ou 'a' e 'z'
+bool validPalavra(char *palavra){ // Verifica se o caracter estÃ¡ entre 'A' e 'Z' ou 'a' e 'z'
     int i = 0;
 
     while(palavra[i] != '\0'){
@@ -120,7 +120,7 @@ ListaPalavras *buscarPalavraAnterior(ListaLetras *letra, char *palavra){
 
     if(letra->inicioPalavras == NULL){ // lista vazia
         return NULL;
-    } else if(strcmp(letra->inicioPalavras->palavra, palavra) == 0){ // palavra no começo da lista
+    } else if(strcmp(letra->inicioPalavras->palavra, palavra) == 0){ // palavra no comeÃ§o da lista
         return NULL;
     } else {
         ListaPalavras *aux = letra->inicioPalavras;
@@ -128,7 +128,7 @@ ListaPalavras *buscarPalavraAnterior(ListaLetras *letra, char *palavra){
         while (aux != NULL) {
             if(aux->proxPalavra == NULL){ // se a proxima palavra nao existe
                 return NULL;
-            } else if(strcmp(aux->proxPalavra->palavra, palavra) == 0){ // se proxima palavra é igual à passada como parâmetro
+            } else if(strcmp(aux->proxPalavra->palavra, palavra) == 0){ // se proxima palavra Ã© igual Ã  passada como parÃ¢metro
                 return aux;
             } else {
                 aux = aux->proxPalavra;
@@ -311,7 +311,7 @@ void atualizarPalavra(ListaLetras **inicio,
     novaPalavra = strupr(novaPalavra);
     novaDescricao[0] = toupper(novaDescricao[0]);
 
-    if(validPalavra(novaPalavra)){ // nova palavra é válida
+    if(validPalavra(novaPalavra)){ // nova palavra Ã© vÃ¡lida
         if(palavra->palavra[0] == novaPalavra[0]){
             strcpy(palavra->palavra, novaPalavra);
             strcpy(palavra->descricao, novaDescricao);
@@ -334,32 +334,48 @@ int main(){
     while(menu != 0){
         quadro();
         gotoxy(1,2); cout << "               MENU PRINCIPAL             \n\n\n";
-        gotoxy(1,3);cout << "  ****************************************" << endl;
-        gotoxy(1,4);cout << "  * [1] - Adicionar uma palavra          *" << endl;
-        gotoxy(1,5);cout << "  * [2] - Exibir as palavras existentes  *" << endl;
-        gotoxy(1,6);cout << "  * [3] - Deletar uma palavra            *" << endl;
-        gotoxy(1,7);cout << "  * [4] - Atualizar uma palavra          *" << endl;
-        gotoxy(1,8);cout << "  * [0] - Sair do programa               *" << endl;
-        gotoxy(1,9);cout << "  ****************************************" << endl;
-        gotoxy(1,10);cout << "  Selecione uma opcao: ";
+        gotoxy(3,3); printf("%c", 218);
+        for (int i=4;i<=41;i++){
+            gotoxy(i,3); printf("%c", 196);
+        }
+        gotoxy(5,4);cout << "[1] - Adicionar uma palavra           " << endl;
+        gotoxy(5,5);cout << "[2] - Exibir as palavras existentes   " << endl;
+        gotoxy(5,6);cout << "[3] - Deletar uma palavra             " << endl;
+        gotoxy(5,7);cout << "[4] - Atualizar uma palavra           " << endl;
+        gotoxy(5,8);cout << "[0] - Sair do programa                " << endl;
+
+        gotoxy(42,3); printf("%c", 191);
+        for (int j=4; j<=8;j++){
+            gotoxy(3,j); printf("%c", 179);
+        }
+        for (int c=4; c<=8;c++){
+            gotoxy(42,c); printf("%c", 179);
+        }
+        gotoxy(3,9); printf("%c", 192);
+        gotoxy(42,9); printf("%c", 217);
+        for (int k=4;k<=41;k++){
+            gotoxy(k,9); printf("%c", 196);
+        }
+        gotoxy(4,10);cout << "Selecione uma opcao: ";
         cin >> menu;
         cin.ignore();
 
         switch (menu) {
             case 1:
                 system("cls");
-                quadro();
+
                 gotoxy(1,2); cout << "               MENU ADICIONAR             \n\n\n";
-                gotoxy(1,3);cout << "  ****************************************" << endl;
-                gotoxy(1,4);cout << "  Informe a palavra:                      " << endl;
-                gotoxy(21,4); cin.getline(palavra, MAX_PALAVRA);
-                gotoxy(1,5);cout << "  Informe a descricao:                    " << endl;
-                gotoxy(23,5);cin.getline(descricao, MAX_DESCRICAO);
-                gotoxy(1,6);cout << "  *                                      *" << endl;
-                gotoxy(1,7);cout << "  *                                      *" << endl;
-                gotoxy(1,8);cout << "  *                                      *" << endl;
-                gotoxy(1,9);cout << "  ****************************************" << endl;
+                for (int i=4;i<=41;i++){
+                    gotoxy(i,3); printf("%c", 196);
+                }
+                gotoxy(5,4); printf("%c", 254);
+                gotoxy(7,4);cout << "Informe a palavra(MAX 50 caracteres): " << endl;
+                gotoxy(44,4);cin.getline(palavra, MAX_PALAVRA);
+                gotoxy(5,5); printf("%c", 254);
+                gotoxy(7,5);cout << "Informe a descricao(MAX 500 caracteres):" << endl;
+                gotoxy(48,5);cin.getline(descricao, MAX_DESCRICAO);
                 inserirPalavra(&inicio, &fim, palavra, descricao);
+                system("cls");
 
                 break;
             case 2:
