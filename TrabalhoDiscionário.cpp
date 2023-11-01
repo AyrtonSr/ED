@@ -55,7 +55,16 @@ void quadro (){
     gotoxy(45,12); printf("%c", 188);
 }
 
-bool validPalavra(char *palavra){ // Verifica se o caracter está entre 'A' e 'Z' ou 'a' e 'z'
+void exibirMensagem (char *frase){
+    int tamanho = strlen(frase);
+
+    for (int i=4; i<=tamanho+5+4;i++){
+        gotoxy(i,3);cout<< "*";
+    }
+    system("pause");
+}
+
+bool validPalavra(char *palavra){ // Verifica se o caracter estÃ¡ entre 'A' e 'Z' ou 'a' e 'z'
     int i = 0;
 
     while(palavra[i] != '\0'){
@@ -122,7 +131,7 @@ ListaPalavras *buscarPalavraAnterior(ListaLetras *letra, char *palavra){
 
     if(letra->inicioPalavras == NULL){ // lista vazia
         return NULL;
-    } else if(strcmp(letra->inicioPalavras->palavra, palavra) == 0){ // palavra no começo da lista
+    } else if(strcmp(letra->inicioPalavras->palavra, palavra) == 0){ // palavra no comeÃ§o da lista
         return NULL;
     } else {
         ListaPalavras *aux = letra->inicioPalavras;
@@ -130,7 +139,7 @@ ListaPalavras *buscarPalavraAnterior(ListaLetras *letra, char *palavra){
         while (aux != NULL) {
             if(aux->proxPalavra == NULL){ // se a proxima palavra nao existe
                 return NULL;
-            } else if(strcmp(aux->proxPalavra->palavra, palavra) == 0){ // se proxima palavra é igual à passada como parâmetro
+            } else if(strcmp(aux->proxPalavra->palavra, palavra) == 0){ // se proxima palavra Ã© igual Ã  passada como parÃ¢metro
                 return aux;
             } else {
                 aux = aux->proxPalavra;
@@ -250,6 +259,7 @@ void exibirPalavras(ListaLetras *inicio, ListaLetras *fim){
 
         cout << "Informe a letra que deseja consultar: ";
         cin >> letra;
+        cin.ignore();
         letra = toupper(letra);
 
         letraE = buscarLetra(inicio, fim, letra);
@@ -337,7 +347,7 @@ void atualizarPalavra(ListaLetras **inicio,
     novaPalavra = strupr(novaPalavra);
     novaDescricao[0] = toupper(novaDescricao[0]);
 
-    if(validPalavra(novaPalavra)){ // nova palavra é válida
+    if(validPalavra(novaPalavra)){ // nova palavra Ã© vÃ¡lida
         if(palavra->palavra[0] == novaPalavra[0]){
             strcpy(palavra->palavra, novaPalavra);
             strcpy(palavra->descricao, novaDescricao);
@@ -377,8 +387,8 @@ void carregarArquivo(ListaLetras **inicio, ListaLetras **fim){
 int main(){
     ListaLetras *inicio= NULL;
     ListaLetras *fim = NULL;
-    int menu = 1;
-    char palavra[MAX_PALAVRA], descricao[MAX_DESCRICAO], opcao;
+    //int menu = 1;
+    char palavra[MAX_PALAVRA], descricao[MAX_DESCRICAO], opcao, menu = '!';
 
     carregarArquivo(&inicio, &fim);
 
@@ -412,11 +422,11 @@ int main(){
         cin.ignore();
 
         switch (menu) {
-            case 1:
+            case '1':
                 system("cls");
 
-                gotoxy(1,2); cout << "               MENU ADICIONAR             \n\n\n";
-                for (int i=4;i<=41;i++){
+                gotoxy(27,2); cout << "               MENU ADICIONAR             \n\n\n";
+                for (int i=4;i<=90;i++){
                     gotoxy(i,3); printf("%c", 196);
                 }
                 gotoxy(5,4); printf("%c", 254);
@@ -429,20 +439,32 @@ int main(){
                 system("cls");
 
                 break;
-            case 2:
+            case '2':
                 exibirPalavras(inicio, fim);
 
                 break;
-            case 3:
+            case '3':
                 system("cls");
-
-                cout << "Informe a palavra: ";
+                exibirPalavras(inicio, fim);
+                //cin.ignore();
+                for (int i=4;i<=27;i++){
+                    gotoxy(i,2); printf("%c", 196);
+                }
+                gotoxy(28,2); cout << " MENU DELETAR\n\n\n";
+                for (int v=42;v<=63;v++){
+                    gotoxy(v,2); printf("%c", 196);
+                }
+                gotoxy(4,3); printf("%c", 254);
+                gotoxy(6,3);cout << "Informe a palavra: ";
                 cin.getline(palavra, MAX_PALAVRA);
+                system("cls");
+                exibirMensagem("PALAVRA DELETADA");
+                //cout << "PALAVRA DELETADA";
 
                 deletarPalavra(&inicio, &fim, palavra);
-
+                system("cls");
                 break;
-            case 4:
+            case '4':
                 system("cls");
 
                 cout << "Informe a palavra que deseja atualizar: ";
@@ -485,7 +507,7 @@ int main(){
                 system("cls");
 
                 break;
-            case 0:
+            case '0':
                 system("cls");
                 cout << "Ate a proxima!";
                 break;
@@ -494,7 +516,6 @@ int main(){
                 cout << "Opcao invalida, tente novamente\n\n";
                 system("pause");
                 break;
-
         }
     }
 
