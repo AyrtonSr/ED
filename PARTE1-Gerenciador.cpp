@@ -54,7 +54,7 @@ void telaDeCarregamento(){
     }
     for(int i=20;i<=45;i++){
     gotoxy(i,5);printf("%c", bar2);
-    Sleep(75);
+    Sleep(40);
     }
 }
 
