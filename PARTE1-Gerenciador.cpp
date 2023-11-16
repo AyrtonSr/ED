@@ -1,43 +1,94 @@
-//Gerenciador
-#include <iostream>
-#include <stdio.h>
-#include <cstring>
-
-#define ARMAZENAMENTO "armazenamento.txt"
-#define AUXILIAR "auxiliar.txt"
+#include<stdio.h>
+#include<iostream>
+#include<windows.h>
 
 using namespace std;
 
-int main (){
-    FILE *arq;
-    char conteudo[400],conteudoF[400], conteudo2[400], conteudoF2[400];
 
-    arq = fopen(ARMAZENAMENTO,"w");
-    cout << "\nEscreva o conteudo do arquivo\n";
-    gets(conteudo);
-    fprintf(arq, "%s", conteudo);
-    fclose(arq);
+typedef struct FILA
+{
+  int nPacote;
+  FILA *proxpacote;
+} FILA;
 
-    arq = fopen(AUXILIAR,"w");
-    cout << "\nEscreva o conteudo do arquivo\n";
-    gets(conteudo2);
-    fprintf(arq, "%s", conteudo2);
-    fclose(arq);
-
-    system ("pause");
-    system ("cls");
-
-    arq = fopen(ARMAZENAMENTO, "r");
-    printf("Conteudo do arquivo armazenamento: ");
-    fgets (conteudoF,400,arq);
-    printf(conteudoF, "\n");
-    fclose(arq);
-
-    arq = fopen(AUXILIAR, "r");
-    printf("\nConteudo do arquivo Auxiliar: ");
-    fgets(conteudoF2,400,arq);
-    printf(conteudoF2, "\n");
-    fclose(arq);
-return 0;
+void gotoxy(int x, int y)
+{
+  COORD coord;
+  coord.X = x;
+  coord.Y = y;
+  SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+void enqueue(FILA **inicio, FILA **fim, int pacote){
+
+    FILA *novoPacote = new FILA();
+
+    if ((*inicio)==NULL){
+        (*inicio)=novoPacote;
+        (*fim)=novoPacote;
+        novoPacote->nPacote = pacote;
+        novoPacote->proxpacote = NULL;
+    }else{
+        (*fim)->proxpacote = novoPacote;
+        (*fim) = (*fim)->proxpacote;
+        novoPacote->nPacote = pacote;
+        novoPacote->proxpacote=NULL;
+    }
+}
+
+FILA *dequeue(FILA *&inicio){
+
+    FILA *aux;
+    aux=inicio;
+    inicio= inicio->proxpacote;
+    return aux;
+}
+
+void telaDeCarregamento(){
+    system("COLOR 0e");
+
+    int bar1 = 177, bar2 = 219;
+    gotoxy(28,4);cout<<"Carregando...";
+    for(int i=20;i<=45;i++){
+    gotoxy(i,5);printf("%c", bar1);
+    }
+    for(int i=20;i<=45;i++){
+    gotoxy(i,5);printf("%c", bar2);
+    Sleep(150);
+    }
+}
+
+
+int main (){
+    FILA *inicio = NULL;
+    FILA *fim = NULL;
+    int tamanho = 0, pacotes = 50, qtdpacotes = 0, c=1;
+
+    gotoxy(4,2);cout << "INFORME O TAMANHO DO ARQUIVO(EM KB): ";
+    cin >> tamanho;
+    if (tamanho%pacotes == 0){
+        qtdpacotes = tamanho/pacotes;
+    } else{
+        qtdpacotes = (tamanho/pacotes)+1;
+    }
+    gotoxy(5,2);cout << "Quantidade de pacotes necessarios: "<<qtdpacotes<<endl;
+    system("pause");
+
+    while(c<=qtdpacotes){
+        enqueue(&inicio, &fim, c);
+        c++;
+    }
+    int y=7;
+    system("cls");
+    while(inicio!=NULL){
+        FILA *aux;
+        aux=dequeue(inicio);
+        telaDeCarregamento();
+        gotoxy(5,y);cout<< "Pacote "<<aux->nPacote<< " Carregado";
+        y++;
+        delete(aux);
+    }
+
+
+return 0;
+}
